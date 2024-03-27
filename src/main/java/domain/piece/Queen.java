@@ -8,6 +8,8 @@ import domain.piece.base.ChessPieceBase;
 
 public class Queen extends ChessPieceBase {
 
+    private static final double QUEEN_DEFAULT_SCORE = 2.5;
+
     public Queen(Color color) {
         super(color);
     }
@@ -21,5 +23,10 @@ public class Queen extends ChessPieceBase {
             return DiagonalDirection.getDirection(rowDifference, columnDifference);
         }
         return StraightDirection.getDirection(rowDifference, columnDifference);
+    }
+
+    @Override
+    public double getDefaultScore() {
+        return QUEEN_DEFAULT_SCORE;
     }
 }

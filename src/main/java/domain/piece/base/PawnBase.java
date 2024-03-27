@@ -8,6 +8,8 @@ import domain.piece.Color;
 
 public abstract class PawnBase extends ChessPieceBase {
 
+    private static final int PAWN_DEFAULT_SCORE = 1;
+
     public PawnBase(Color color) {
         super(color);
     }
@@ -25,6 +27,11 @@ public abstract class PawnBase extends ChessPieceBase {
             return direction;
         }
         throw new IllegalArgumentException("이동할 수 없는 위치입니다.");
+    }
+
+    @Override
+    public double getDefaultScore() {
+        return PAWN_DEFAULT_SCORE;
     }
 
     private Direction getPawnDirection(Coordinate start, Coordinate destination) {

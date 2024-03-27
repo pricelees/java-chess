@@ -13,6 +13,9 @@ public abstract class ChessPieceBase implements ChessPiece {
     }
 
     @Override
+    public abstract double getDefaultScore();
+
+    @Override
     public abstract Direction getDirection(Coordinate start, Coordinate destination);
 
     @Override

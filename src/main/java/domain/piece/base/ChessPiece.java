@@ -8,5 +8,7 @@ public interface ChessPiece {
 
     Direction getDirection(Coordinate start, Coordinate destination);
 
+    double getDefaultScore();
+
     boolean hasSameColor(Color color);
 }

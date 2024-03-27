@@ -21,6 +21,11 @@ public class Blank implements ChessPiece {
     }
 
     @Override
+    public double getDefaultScore() {
+        return 0;
+    }
+
+    @Override
     public boolean hasSameColor(Color color) {
         return true;
     }

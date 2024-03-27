@@ -22,6 +22,11 @@ public class King extends ChessPieceBase {
         return direction;
     }
 
+    @Override
+    public double getDefaultScore() {
+        return 0;
+    }
+
     private Direction getKingDirection(int rowDifference, int columnDifference) {
         if (DiagonalDirection.isDiagonal(rowDifference, columnDifference)) {
             return DiagonalDirection.getDirection(rowDifference, columnDifference);

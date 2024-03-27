@@ -7,6 +7,8 @@ import domain.piece.base.ChessPieceBase;
 
 public class Bishop extends ChessPieceBase {
 
+    private static final double BISHOP_DEFAULT_SCORE = 1;
+
     public Bishop(Color color) {
         super(color);
     }
@@ -17,5 +19,10 @@ public class Bishop extends ChessPieceBase {
         int columnDifference = start.calculateColumnDifference(destination);
 
         return DiagonalDirection.getDirection(rowDifference, columnDifference);
+    }
+
+    @Override
+    public double getDefaultScore() {
+        return BISHOP_DEFAULT_SCORE;
     }
 }

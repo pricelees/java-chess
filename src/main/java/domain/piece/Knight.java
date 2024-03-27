@@ -7,6 +7,8 @@ import domain.piece.base.ChessPieceBase;
 
 public class Knight extends ChessPieceBase {
 
+    private static final double KNIGHT_DEFAULT_SCORE = 2.5;
+
     public Knight(Color color) {
         super(color);
     }
@@ -17,5 +19,10 @@ public class Knight extends ChessPieceBase {
         int columnDifference = start.calculateColumnDifference(destination);
 
         return KnightDirection.getDirection(rowDifference, columnDifference);
+    }
+
+    @Override
+    public double getDefaultScore() {
+        return KNIGHT_DEFAULT_SCORE;
     }
 }
