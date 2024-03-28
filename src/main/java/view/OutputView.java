@@ -41,11 +41,15 @@ public class OutputView {
 
     private String formatResult(double playerScore, double opponentScore) {
         if (playerScore > opponentScore) {
-            return "승리.";
+            return "승리하셨습니다!";
         }
         if (playerScore < opponentScore) {
-            return "패배.";
+            return "패배하셨습니다!";
         }
-        return "무승부.";
+        return "비겼습니다.";
+    }
+
+    public void printMessageWhenRemoveOpponentKing() {
+        System.out.println("상대의 King이 제거되었습니다. 승리를 축하합니다!");
     }
 }

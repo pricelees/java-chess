@@ -77,7 +77,12 @@ public class ChessGameController {
         MovingResult movingResult = chessGame.startTurn(start, destination);
         printCurrentBoardStatus(chessGame);
 
-        return movingResult.isNextTurnAvailable();
+        boolean isNextTurnAvailable = movingResult.isNextTurnAvailable();
+        if (!isNextTurnAvailable) {
+            outputView.printMessageWhenRemoveOpponentKing();
+        }
+
+        return isNextTurnAvailable;
     }
 
     private Coordinate createCoordinate(CoordinateRequest coordinateRequest) {
