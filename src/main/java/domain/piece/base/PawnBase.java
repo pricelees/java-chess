@@ -34,6 +34,11 @@ public abstract class PawnBase extends ChessPieceBase {
         return PAWN_DEFAULT_SCORE;
     }
 
+    @Override
+    public boolean isPawn() {
+        return true;
+    }
+
     private Direction getPawnDirection(Coordinate start, Coordinate destination) {
         int rowDifference = start.calculateRowDifference(destination);
         int columnDifference = start.calculateColumnDifference(destination);

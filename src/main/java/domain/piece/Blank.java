@@ -29,4 +29,9 @@ public class Blank implements ChessPiece {
     public boolean hasSameColor(Color color) {
         return true;
     }
+
+    @Override
+    public boolean isPawn() {
+        return false;
+    }
 }

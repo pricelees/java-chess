@@ -11,4 +11,6 @@ public interface ChessPiece {
     double getDefaultScore();
 
     boolean hasSameColor(Color color);
+
+    boolean isPawn();
 }
