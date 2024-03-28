@@ -12,7 +12,7 @@ import view.OutputView;
 import view.dto.Commands;
 import view.dto.CoordinateRequest;
 import view.util.Command;
-import view.util.PieceTranslator;
+import view.util.ChessPieceSymbol;
 
 public class ChessGameController {
 
@@ -88,17 +88,17 @@ public class ChessGameController {
 
     private List<String> getRowStatus(Row row) {
         return row.getPieces().stream()
-                .map(this::getPieceName)
+                .map(this::mapPieceToSymbol)
                 .toList();
     }
 
-    private String getPieceName(ChessPiece chessPiece) {
-        PieceTranslator pieceTranslator = PieceTranslator.from(chessPiece);
-        String name = pieceTranslator.getName();
+    private String mapPieceToSymbol(ChessPiece chessPiece) {
+        ChessPieceSymbol chessPieceSymbol = ChessPieceSymbol.from(chessPiece);
+        String symbol = chessPieceSymbol.getSymbol();
 
         if (chessPiece.hasSameColor(Color.WHITE)) {
-            return name;
+            return symbol;
         }
-        return name.toUpperCase();
+        return symbol.toUpperCase();
     }
 }

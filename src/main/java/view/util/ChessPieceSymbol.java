@@ -11,7 +11,7 @@ import domain.piece.WhitePawn;
 import domain.piece.base.ChessPiece;
 import java.util.Arrays;
 
-public enum PieceTranslator {
+public enum ChessPieceSymbol {
 
     KING(King.class, "k"),
     QUEEN(Queen.class, "q"),
@@ -23,16 +23,16 @@ public enum PieceTranslator {
     NONE(Blank.class, ".");
 
     private final Class<? extends ChessPiece> classType;
-    private final String name;
+    private final String symbol;
 
-    PieceTranslator(Class<? extends ChessPiece> classType, String name) {
+    ChessPieceSymbol(Class<? extends ChessPiece> classType, String symbol) {
         this.classType = classType;
-        this.name = name;
+        this.symbol = symbol;
     }
 
-    public static PieceTranslator from(ChessPiece chessPiece) {
+    public static ChessPieceSymbol from(ChessPiece chessPiece) {
         return Arrays.stream(values())
-                .filter(type -> type.isSameType(chessPiece))
+                .filter(piece -> piece.isSameType(chessPiece))
                 .findAny()
                 .orElseThrow();
     }
@@ -41,7 +41,7 @@ public enum PieceTranslator {
         return this.classType.isInstance(chessPiece);
     }
 
-    public String getName() {
-        return name;
+    public String getSymbol() {
+        return symbol;
     }
 }
