@@ -1,6 +1,7 @@
 package domain.game;
 
 import domain.chessboard.ChessBoard;
+import domain.chessboard.MovingResult;
 import domain.chessboard.Row;
 import domain.coordinate.Coordinate;
 import domain.piece.Color;
@@ -19,9 +20,11 @@ public class ChessGame {
         movablePieceColor = DEFAULT_START_COLOR;
     }
 
-    public void startTurn(Coordinate start, Coordinate destination) {
-        chessBoard.movePiece(start, destination, movablePieceColor);
+    public MovingResult startTurn(Coordinate start, Coordinate destination) {
+        boolean isKingRemoved = chessBoard.movePiece(start, destination, movablePieceColor);
         changeTurn();
+
+        return new MovingResult(isKingRemoved, movablePieceColor);
     }
 
     private void changeTurn() {

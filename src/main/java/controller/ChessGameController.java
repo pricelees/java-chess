@@ -1,5 +1,6 @@
 package controller;
 
+import domain.chessboard.MovingResult;
 import domain.chessboard.Row;
 import domain.coordinate.Coordinate;
 import domain.game.ChessGame;
@@ -26,13 +27,12 @@ public class ChessGameController {
     public void run() {
         outputView.printGameGuide();
 
-        ChessGame chessGame = initializeBoard();
+        ChessGame chessGame = initializeGame();
         printCurrentBoardStatus(chessGame);
-
         start(chessGame);
     }
 
-    private ChessGame initializeBoard() {
+    private ChessGame initializeGame() {
         Commands commands = inputView.receiveCommands();
 
         if (Command.START != commands.command()) {
@@ -53,28 +53,26 @@ public class ChessGameController {
         Commands commands = inputView.receiveCommands();
 
         if (isCommandMove(commands)) {
-            move(chessGame, commands);
-            printCurrentBoardStatus(chessGame);
-            return true;
+            return move(chessGame, commands);
         }
         return false;
     }
 
     private boolean isCommandMove(Commands commands) {
-        if (commands.command() == Command.END) {
-            return false;
-        }
         if (commands.command() == Command.START) {
             throw new IllegalArgumentException("이미 시작한 상태 입니다.");
         }
-        return true;
+
+        return commands.command() == Command.MOVE;
     }
 
-    private void move(ChessGame chessGame, Commands commands) {
+    private boolean move(ChessGame chessGame, Commands commands) {
         Coordinate start = createCoordinate(commands.startCoordinate());
         Coordinate destination = createCoordinate(commands.destinationCoordinate());
+        MovingResult movingResult = chessGame.startTurn(start, destination);
+        printCurrentBoardStatus(chessGame);
 
-        chessGame.startTurn(start, destination);
+        return movingResult.isNextTurnAvailable();
     }
 
     private Coordinate createCoordinate(CoordinateRequest coordinateRequest) {
