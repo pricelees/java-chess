@@ -1,5 +1,6 @@
 package view;
 
+import controller.dto.ChessBoardStatusDTO;
 import java.util.List;
 
 public class OutputView {
@@ -13,8 +14,8 @@ public class OutputView {
                 """);
     }
 
-    public void printBoard(List<List<String>> board) {
-        board.forEach(this::printRow);
+    public void printBoard(ChessBoardStatusDTO chessBoardStatusDTO) {
+        chessBoardStatusDTO.boardStatus().forEach(this::printRow);
     }
 
     private void printRow(List<String> row) {

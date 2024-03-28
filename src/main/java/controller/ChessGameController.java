@@ -1,18 +1,14 @@
 package controller;
 
+import controller.dto.ChessBoardStatusDTO;
 import domain.chessboard.MovingResult;
-import domain.chessboard.Row;
 import domain.coordinate.Coordinate;
 import domain.game.ChessGame;
-import domain.piece.Color;
-import domain.piece.base.ChessPiece;
-import java.util.List;
 import view.InputView;
 import view.OutputView;
 import view.dto.Commands;
 import view.dto.CoordinateRequest;
 import view.util.Command;
-import view.util.ChessPieceSymbol;
 
 public class ChessGameController {
 
@@ -80,25 +76,6 @@ public class ChessGameController {
     }
 
     private void printCurrentBoardStatus(ChessGame chessGame) {
-        List<List<String>> boardStatus = chessGame.getCurrentBoard().stream()
-                .map(this::getRowStatus)
-                .toList();
-        outputView.printBoard(boardStatus);
-    }
-
-    private List<String> getRowStatus(Row row) {
-        return row.getPieces().stream()
-                .map(this::mapPieceToSymbol)
-                .toList();
-    }
-
-    private String mapPieceToSymbol(ChessPiece chessPiece) {
-        ChessPieceSymbol chessPieceSymbol = ChessPieceSymbol.from(chessPiece);
-        String symbol = chessPieceSymbol.getSymbol();
-
-        if (chessPiece.hasSameColor(Color.WHITE)) {
-            return symbol;
-        }
-        return symbol.toUpperCase();
+        outputView.printBoard(ChessBoardStatusDTO.from(chessGame));
     }
 }
