@@ -8,7 +8,7 @@ import domain.piece.base.ChessPieceBase;
 
 public class Queen extends ChessPieceBase {
 
-    private static final double QUEEN_DEFAULT_SCORE = 2.5;
+    private static final double QUEEN_DEFAULT_SCORE = 9;
 
     public Queen(Color color) {
         super(color);

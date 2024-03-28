@@ -7,7 +7,7 @@ import domain.piece.base.ChessPieceBase;
 
 public class Rook extends ChessPieceBase {
 
-    private static final double ROOK_DEFAULT_SCORE = 2.5;
+    private static final double ROOK_DEFAULT_SCORE = 5;
 
     public Rook(Color color) {
         super(color);
