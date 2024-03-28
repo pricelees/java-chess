@@ -2,11 +2,16 @@ package domain.chessboard;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import domain.coordinate.Coordinate;
 import domain.coordinate.Position;
 import domain.piece.BlackPawn;
+import domain.piece.Blank;
 import domain.piece.Color;
+import domain.piece.base.ChessPiece;
+import net.bytebuddy.pool.TypePool.Empty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,28 +73,108 @@ class ChessBoardTest {
                 .hasMessage("이동 경로에 말이 존재합니다.");
     }
 
-    /**
-     RNBQKBNR
-     .PPPPPPP
-     ........
-     ........
-     .P......
-     ........
-     p.pppppp
-     rnbqkbnr
-     */
     @DisplayName("상대의 말을 잡고 그 위치로 이동한다.")
     @Test
     void moveAfterKill() {
-        // 왼쪽에서 두 번째 흰색 폰을 두 칸 앞으로 이동시킨다.
+        /*
+         RNBQKBNR
+         PPPPPPPP
+         ........
+         ........
+         .p......
+         ........
+         p.pppppp
+         rnbqkbnr
+         */
         chessBoard.movePiece(new Coordinate(6, 1), new Coordinate(4, 1), Color.WHITE);
 
-        // 맨 왼쪽의 검정 폰을 두 칸 앞으로 이동시킨다.
+        /*
+         RNBQKBNR
+         .PPPPPPP
+         ........
+         P.......
+         .p......
+         ........
+         p.pppppp
+         rnbqkbnr
+         */
         chessBoard.movePiece(new Coordinate(1, 0), new Coordinate(3, 0), Color.BLACK);
 
-        // 이동한 검정 폰은 오른쪽 아래 대각선에 있는 흰색 폰을 잡고 이동할 수 있다.
+        /*
+         RNBQKBNR
+         .PPPPPPP
+         ........
+         ........
+         .P......
+         ........
+         p.pppppp
+         rnbqkbnr
+         */
         chessBoard.movePiece(new Coordinate(3, 0), new Coordinate(4, 1), Color.BLACK);
 
-        assertThat(chessBoard.getBoard().get(4).getPiece(Position.of(1))).isInstanceOf(BlackPawn.class);
+        assertThat(getPieceInBoard(new Coordinate(4, 1))).isInstanceOf(BlackPawn.class);
+        assertThat(getPieceInBoard(new Coordinate(1, 0))).isInstanceOf(Blank.class);
+        assertThat(getPieceInBoard(new Coordinate(6, 1))).isInstanceOf(Blank.class);
+    }
+
+    @DisplayName("상대의 King을 잡고 이동하면 true를, 빈 칸으로의 이동 또는 상대의 다른 말을 잡으면 false를 반환한다.")
+    @Test
+    void removeKing() {
+        boolean isKingRemoved;
+        /*
+         RNBQKBNR
+         PPPPPPPP
+         ........
+         ........
+         ........
+         ..n.....
+         pppppppp
+         r.bqkbnr
+         */
+        isKingRemoved = chessBoard.movePiece(new Coordinate(7, 1), new Coordinate(5, 2), Color.WHITE);
+        assertFalse(isKingRemoved);
+
+        /*
+         RNBQKBNR
+         PPPPPPPP
+         ........
+         .n......
+         ........
+         ........
+         pppppppp
+         r.bqkbnr
+         */
+        isKingRemoved = chessBoard.movePiece(new Coordinate(5, 2), new Coordinate(3, 1), Color.WHITE);
+        assertFalse(isKingRemoved);
+
+         /*
+         RNBQKBNR
+         PPnPPPPP
+         ........
+         ........
+         ........
+         ........
+         pppppppp
+         r.bqkbnr
+         */
+        isKingRemoved = chessBoard.movePiece(new Coordinate(3, 1), new Coordinate(1, 2), Color.WHITE);
+        assertFalse(isKingRemoved);
+
+         /*
+         RNBQnBNR
+         PP.PPPPP
+         ........
+         ........
+         ........
+         ........
+         pppppppp
+         r.bqkbnr
+         */
+        isKingRemoved = chessBoard.movePiece(new Coordinate(1, 2), new Coordinate(0, 4), Color.WHITE);
+        assertTrue(isKingRemoved);
+    }
+
+    private ChessPiece getPieceInBoard(Coordinate coordinate) {
+        return chessBoard.getBoard().get(coordinate.getRow().getValue()).getPiece(coordinate.getColumn());
     }
 }

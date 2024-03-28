@@ -5,6 +5,7 @@ import domain.coordinate.Position;
 import domain.direction.Direction;
 import domain.piece.Blank;
 import domain.piece.Color;
+import domain.piece.King;
 import domain.piece.base.ChessPiece;
 import java.util.List;
 
@@ -16,11 +17,18 @@ public class ChessBoard {
         this.board = ChessBoardInitializer.createInitialBoard();
     }
 
-    public void movePiece(Coordinate start, Coordinate destination, Color currentTurnColor) {
-        ChessPiece movingPiece = getMovingPiece(start, currentTurnColor);
+    /**
+     * @param start 이동할 말의 위치
+     * @param destination 말을 이동시키고자 하는 위치
+     * @param currentTurnColor 현재 이동이 가능한 말의 색상
+     * @return 이동이 불가능하면 예외, 상대의 King을 잡고 이동하면 true, 이외의 이동에 대해선 false
+     */
+    public boolean movePiece(Coordinate start, Coordinate destination, Color currentTurnColor) {
+        Direction direction = getMovingPiece(start, currentTurnColor).getDirection(start, destination);
         validateDestination(destination, currentTurnColor);
-        validatePath(movingPiece, start, destination);
-        move(start, destination);
+        validatePath(direction, start, destination);
+
+        return move(start, destination);
     }
 
     private ChessPiece getMovingPiece(Coordinate start, Color currentTurnColor) {
@@ -41,8 +49,7 @@ public class ChessBoard {
         }
     }
 
-    private void validatePath(ChessPiece piece, Coordinate start, Coordinate destination) {
-        Direction direction = piece.getDirection(start, destination);
+    private void validatePath(Direction direction, Coordinate start, Coordinate destination) {
         Coordinate current = start.moveOneStep(direction);
 
         while (!current.equals(destination)) {
@@ -61,10 +68,14 @@ public class ChessBoard {
         return getPiece(coordinate) instanceof Blank;
     }
 
-    private void move(Coordinate start, Coordinate destination) {
+    private boolean move(Coordinate start, Coordinate destination) {
         ChessPiece movingPiece = getPiece(start);
+        ChessPiece removedPiece = getPiece(destination);
+
         replacePiece(start, Blank.getInstance());
         replacePiece(destination, movingPiece);
+
+        return removedPiece instanceof King;
     }
 
     private void replacePiece(Coordinate coordinate, ChessPiece chessPiece) {
