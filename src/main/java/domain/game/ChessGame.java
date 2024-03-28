@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ChessGame {
 
+    private static final ChessScore chessScore = new ChessScore();
     private static final Color DEFAULT_START_COLOR = Color.WHITE;
 
     private final ChessBoard chessBoard;
@@ -22,17 +23,17 @@ public class ChessGame {
 
     public MovingResult startTurn(Coordinate start, Coordinate destination) {
         boolean isKingRemoved = chessBoard.movePiece(start, destination, movablePieceColor);
-        changeTurn();
+        movablePieceColor = movablePieceColor.getOpponentColor();
 
         return new MovingResult(isKingRemoved, movablePieceColor);
     }
 
-    private void changeTurn() {
-        if (movablePieceColor == Color.WHITE) {
-            movablePieceColor = Color.BLACK;
-            return;
-        }
-        movablePieceColor = Color.WHITE;
+    public double calculatePlayerScore() {
+        return chessScore.getScore(getCurrentBoard(), movablePieceColor);
+    }
+
+    public double calculateOpponentScore() {
+        return chessScore.getScore(getCurrentBoard(), movablePieceColor.getOpponentColor());
     }
 
     public List<Row> getCurrentBoard() {
