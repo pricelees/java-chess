@@ -51,6 +51,11 @@ public class ChessGameController {
         if (isCommandMove(commands)) {
             return move(chessGame, commands);
         }
+        if (isCommandStatus(commands.command())) {
+            printScore(chessGame);
+            return true;
+        }
+        printResultByComparingScore(chessGame);
         return false;
     }
 
@@ -60,6 +65,10 @@ public class ChessGameController {
         }
 
         return commands.command() == Command.MOVE;
+    }
+
+    private boolean isCommandStatus(Command command) {
+        return command == Command.STATUS;
     }
 
     private boolean move(ChessGame chessGame, Commands commands) {
@@ -77,5 +86,13 @@ public class ChessGameController {
 
     private void printCurrentBoardStatus(ChessGame chessGame) {
         outputView.printBoard(ChessBoardStatusDTO.from(chessGame));
+    }
+
+    private void printScore(ChessGame chessGame) {
+        outputView.printScore(chessGame.calculatePlayerScore(), chessGame.calculateOpponentScore());
+    }
+
+    private void printResultByComparingScore(ChessGame chessGame) {
+        outputView.printScoreResult(chessGame.calculatePlayerScore(), chessGame.calculateOpponentScore());
     }
 }
