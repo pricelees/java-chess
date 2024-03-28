@@ -22,4 +22,9 @@ public abstract class ChessPieceBase implements ChessPiece {
     public boolean hasSameColor(Color color) {
         return this.color == color;
     }
+
+    @Override
+    public boolean isPawn() {
+        return false;
+    }
 }
