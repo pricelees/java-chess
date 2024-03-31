@@ -7,8 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import service.ChessGameService;
 
-class ChessBoardStatusDTOTest {
+class ChessBoardStatusDtoTest {
 
     /**
      * RNBQKBNR
@@ -24,7 +25,9 @@ class ChessBoardStatusDTOTest {
     @Test
     void create() {
         ChessGame chessGame = new ChessGame();
-        ChessBoardStatusDTO chessBoardStatusDTO = ChessBoardStatusDTO.from(chessGame);
+        ChessGameService chessGameService = ChessGameService.getInstance();
+        ChessBoardStatusDto chessBoardStatusDTO = ChessBoardStatusDto.from(
+                chessGameService.getPiecesInBoard(chessGame));
 
         List<String> expectedBlackFirstRow = Arrays.asList("RNBQKBNR".split(""));
         List<String> expectedBlackSecondRow = Arrays.asList("PPPPPPPP".split(""));
