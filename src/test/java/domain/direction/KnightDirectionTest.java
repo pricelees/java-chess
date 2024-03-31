@@ -4,7 +4,6 @@ import static domain.direction.KnightDirection.getDirection;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -66,6 +65,7 @@ class KnightDirectionTest {
 
             assertThat(getDirection(-2, -1)).isEqualTo(expected);
         }
+
         @DisplayName("위로 한칸 이동 후, 오른쪽 위 대각선으로 이동한다.")
         @Test
         void upAndUpRightDiagonal() {

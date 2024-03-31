@@ -27,7 +27,8 @@ public enum StraightDirection implements Direction {
 
     @Override
     public boolean isSameDirection(int rowDifference, int columnDifference) {
-        return this.rowOffset == Calculator.normalize(rowDifference) && this.columnOffset == Calculator.normalize(columnDifference);
+        return this.rowOffset == Calculator.normalize(rowDifference)
+                && this.columnOffset == Calculator.normalize(columnDifference);
     }
 
     @Override

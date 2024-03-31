@@ -34,7 +34,8 @@ public enum DiagonalDirection implements Direction {
         if (Math.abs(rowDifference) != Math.abs(columnDifference)) {
             return false;
         }
-        return this.rowOffset == Calculator.normalize(rowDifference) && this.columnOffset == Calculator.normalize(columnDifference);
+        return this.rowOffset == Calculator.normalize(rowDifference)
+                && this.columnOffset == Calculator.normalize(columnDifference);
     }
 
     @Override
