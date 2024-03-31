@@ -1,47 +1,31 @@
 package view.util;
 
-import domain.piece.Bishop;
-import domain.piece.BlackPawn;
-import domain.piece.Blank;
-import domain.piece.King;
-import domain.piece.Knight;
-import domain.piece.Queen;
-import domain.piece.Rook;
-import domain.piece.WhitePawn;
-import domain.piece.base.ChessPiece;
+import domain.piece.type.PieceType;
 import java.util.Arrays;
 
 public enum ChessPieceSymbol {
 
-    KING(King.class, "k"),
-    QUEEN(Queen.class, "q"),
-    ROOK(Rook.class, "r"),
-    BISHOP(Bishop.class, "b"),
-    KNIGHT(Knight.class, "n"),
-    WHITE_PAWN(WhitePawn.class, "p"),
-    BLACK_PAWN(BlackPawn.class, "P"),
-    NONE(Blank.class, ".");
+    KING(PieceType.KING, "k"),
+    QUEEN(PieceType.QUEEN, "q"),
+    ROOK(PieceType.ROOK, "r"),
+    BISHOP(PieceType.BISHOP, "b"),
+    KNIGHT(PieceType.KNIGHT, "n"),
+    PAWN(PieceType.PAWN, "p"),
+    NONE(PieceType.BLANK, ".");
 
-    private final Class<? extends ChessPiece> classType;
+    private final PieceType pieceType;
     private final String symbol;
 
-    ChessPieceSymbol(Class<? extends ChessPiece> classType, String symbol) {
-        this.classType = classType;
+    ChessPieceSymbol(PieceType pieceType, String symbol) {
+        this.pieceType = pieceType;
         this.symbol = symbol;
     }
 
-    public static ChessPieceSymbol from(ChessPiece chessPiece) {
+    public static String getSymbol(PieceType pieceType) {
         return Arrays.stream(values())
-                .filter(piece -> piece.isSameType(chessPiece))
+                .filter(piece -> piece.pieceType == pieceType)
                 .findAny()
-                .orElseThrow();
-    }
-
-    private boolean isSameType(ChessPiece chessPiece) {
-        return this.classType.isInstance(chessPiece);
-    }
-
-    public String getSymbol() {
-        return symbol;
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 타입입니다."))
+                .symbol;
     }
 }
