@@ -1,22 +1,23 @@
 package domain.chessboard;
 
-import domain.piece.Color;
+import domain.piece.base.ChessPiece;
+import domain.piece.type.PieceType;
 
 public class MovingResult {
 
-    private final boolean isKingRemoved;
-    private final Color removedKingColor;
+    private final ChessPiece movingPiece;
+    private final ChessPiece removedPiece;
 
-    public MovingResult(boolean isKingRemoved, Color removedKingColor) {
-        this.isKingRemoved = isKingRemoved;
-        this.removedKingColor = removedKingColor;
+    public MovingResult(ChessPiece movingPiece, ChessPiece removedPiece) {
+        this.movingPiece = movingPiece;
+        this.removedPiece = removedPiece;
     }
 
-    public boolean isNextTurnAvailable() {
-        return !isKingRemoved;
+    public boolean isKingRemoved() {
+        return removedPiece.isSameType(PieceType.KING);
     }
 
-    public Color getRemovedKingColor() {
-        return removedKingColor;
+    public ChessPiece getMovingPiece() {
+        return movingPiece;
     }
 }
