@@ -2,10 +2,10 @@ package domain.game;
 
 import domain.chessboard.ChessBoard;
 import domain.chessboard.MovingResult;
-import domain.chessboard.Row;
 import domain.coordinate.Coordinate;
 import domain.piece.Color;
-import java.util.List;
+import domain.piece.base.ChessPiece;
+import java.util.Map;
 
 public class ChessGame {
 
@@ -16,16 +16,21 @@ public class ChessGame {
 
     private Color movablePieceColor;
 
+    public ChessGame(ChessBoard chessBoard, Color movablePieceColor) {
+        this.chessBoard = chessBoard;
+        this.movablePieceColor = movablePieceColor;
+    }
+
     public ChessGame() {
         this.chessBoard = new ChessBoard();
         movablePieceColor = DEFAULT_START_COLOR;
     }
 
     public MovingResult startTurn(Coordinate start, Coordinate destination) {
-        boolean isKingRemoved = chessBoard.movePiece(start, destination, movablePieceColor);
+        MovingResult movingResult = chessBoard.movePiece(start, destination, movablePieceColor);
         movablePieceColor = movablePieceColor.getOpponentColor();
 
-        return new MovingResult(isKingRemoved, movablePieceColor);
+        return movingResult;
     }
 
     public double calculatePlayerScore() {
@@ -36,7 +41,11 @@ public class ChessGame {
         return chessScore.getScore(getCurrentBoard(), movablePieceColor.getOpponentColor());
     }
 
-    public List<Row> getCurrentBoard() {
+    public Map<Coordinate, ChessPiece> getCurrentBoard() {
         return chessBoard.getBoard();
+    }
+
+    public Color getMovablePieceColor() {
+        return movablePieceColor;
     }
 }
