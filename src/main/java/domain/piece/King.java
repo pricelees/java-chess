@@ -5,11 +5,12 @@ import domain.direction.DiagonalDirection;
 import domain.direction.Direction;
 import domain.direction.StraightDirection;
 import domain.piece.base.ChessPieceBase;
+import domain.piece.type.PieceType;
 
 public class King extends ChessPieceBase {
 
     public King(Color color) {
-        super(color);
+        super(PieceType.KING, color);
     }
 
     @Override

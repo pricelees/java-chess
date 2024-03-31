@@ -4,13 +4,14 @@ import domain.coordinate.Coordinate;
 import domain.direction.Direction;
 import domain.direction.KnightDirection;
 import domain.piece.base.ChessPieceBase;
+import domain.piece.type.PieceType;
 
 public class Knight extends ChessPieceBase {
 
     private static final double KNIGHT_DEFAULT_SCORE = 2.5;
 
     public Knight(Color color) {
-        super(color);
+        super(PieceType.KNIGHT, color);
     }
 
     @Override

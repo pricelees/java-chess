@@ -3,6 +3,7 @@ package domain.piece.base;
 import domain.coordinate.Coordinate;
 import domain.direction.Direction;
 import domain.piece.Color;
+import domain.piece.type.PieceType;
 
 public interface ChessPiece {
 
@@ -12,5 +13,9 @@ public interface ChessPiece {
 
     boolean hasSameColor(Color color);
 
-    boolean isPawn();
+    boolean isSameType(PieceType pieceType);
+
+    PieceType getType();
+
+    Color getColor();
 }

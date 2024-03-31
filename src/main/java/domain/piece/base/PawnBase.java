@@ -5,13 +5,14 @@ import domain.direction.DiagonalDirection;
 import domain.direction.Direction;
 import domain.direction.StraightDirection;
 import domain.piece.Color;
+import domain.piece.type.PieceType;
 
 public abstract class PawnBase extends ChessPieceBase {
 
     private static final int PAWN_DEFAULT_SCORE = 1;
 
     public PawnBase(Color color) {
-        super(color);
+        super(PieceType.PAWN, color);
     }
 
     public abstract boolean isInitialPawn(Coordinate start);
@@ -32,11 +33,6 @@ public abstract class PawnBase extends ChessPieceBase {
     @Override
     public double getDefaultScore() {
         return PAWN_DEFAULT_SCORE;
-    }
-
-    @Override
-    public boolean isPawn() {
-        return true;
     }
 
     private Direction getPawnDirection(Coordinate start, Coordinate destination) {
