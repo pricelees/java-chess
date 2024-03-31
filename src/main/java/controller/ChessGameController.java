@@ -1,17 +1,17 @@
 package controller;
 
-import controller.dto.ChessBoardStatusDTO;
-import domain.chessboard.MovingResult;
-import domain.coordinate.Coordinate;
+import controller.dto.ChessBoardStatusDto;
+import controller.dto.ScoreDto;
 import domain.game.ChessGame;
+import domain.piece.Color;
+import service.ChessGameService;
 import view.InputView;
 import view.OutputView;
-import view.dto.Commands;
-import view.dto.CoordinateRequest;
+import view.dto.CommandRequest;
 import view.util.Command;
 
 public class ChessGameController {
-
+    private static final ChessGameService chessGameService = ChessGameService.getInstance();
     private final InputView inputView;
     private final OutputView outputView;
 
@@ -29,12 +29,12 @@ public class ChessGameController {
     }
 
     private ChessGame initializeGame() {
-        Commands commands = inputView.receiveCommands();
+        Command command = inputView.receiveInitialCommand();
 
-        if (Command.START != commands.command()) {
-            throw new IllegalArgumentException("게임을 먼저 시작하세요.");
+        if (Command.START == command) {
+            return chessGameService.createInitialGame();
         }
-        return new ChessGame();
+        return chessGameService.loadGame();
     }
 
     private void start(ChessGame chessGame) {
@@ -46,58 +46,63 @@ public class ChessGameController {
     }
 
     private boolean playGame(ChessGame chessGame) {
-        Commands commands = inputView.receiveCommands();
+        outputView.printCurrentTurnColor(chessGame.getMovablePieceColor().name());
+        CommandRequest commandRequest = inputView.receivePlayingCommand();
+        Command command = commandRequest.getCommand();
 
-        if (isCommandMove(commands)) {
-            return move(chessGame, commands);
+        if (command == Command.MOVE) {
+            return move(chessGame, commandRequest);
         }
-        if (isCommandStatus(commands.command())) {
-            printScore(chessGame);
+        if (command == Command.STATUS) {
+            printScore(chessGame, false);
             return true;
         }
-        printResultByComparingScore(chessGame);
+        return isCommandSaveOrEnd(command, chessGame);
+    }
+
+    private boolean isCommandSaveOrEnd(Command command, ChessGame chessGame) {
+        if (command == Command.END) {
+            printScore(chessGame, true);
+            chessGameService.deleteGame();
+        }
+        if (command == Command.SAVE) {
+            printScore(chessGame, false);
+        }
         return false;
     }
 
-    private boolean isCommandMove(Commands commands) {
-        if (commands.command() == Command.START) {
-            throw new IllegalArgumentException("이미 시작한 상태 입니다.");
-        }
-
-        return commands.command() == Command.MOVE;
-    }
-
-    private boolean isCommandStatus(Command command) {
-        return command == Command.STATUS;
-    }
-
-    private boolean move(ChessGame chessGame, Commands commands) {
-        Coordinate start = createCoordinate(commands.startCoordinate());
-        Coordinate destination = createCoordinate(commands.destinationCoordinate());
-        MovingResult movingResult = chessGame.startTurn(start, destination);
+    private boolean move(ChessGame chessGame, CommandRequest commandRequest) {
+        boolean isKingRemoved = chessGameService.move(
+                chessGame, commandRequest.getStartCoordinate(), commandRequest.getDestinationCoordinate()
+        );
         printCurrentBoardStatus(chessGame);
 
-        boolean isNextTurnAvailable = movingResult.isNextTurnAvailable();
-        if (!isNextTurnAvailable) {
-            outputView.printMessageWhenRemoveOpponentKing();
-        }
-
-        return isNextTurnAvailable;
+        return isNextTurnAvailable(isKingRemoved, chessGame);
     }
 
-    private Coordinate createCoordinate(CoordinateRequest coordinateRequest) {
-        return new Coordinate(coordinateRequest.row(), coordinateRequest.column());
+    private boolean isNextTurnAvailable(boolean isKingRemoved, ChessGame chessGame) {
+        if (isKingRemoved) {
+            Color removedKingColor = chessGame.getMovablePieceColor();
+            outputView.printMessageWhenRemoveOpponentKing(
+                    removedKingColor.name(), removedKingColor.getOpponentColor().name()
+            );
+        }
+        return !isKingRemoved;
     }
 
     private void printCurrentBoardStatus(ChessGame chessGame) {
-        outputView.printBoard(ChessBoardStatusDTO.from(chessGame));
+        outputView.printBoard(ChessBoardStatusDto.from(chessGameService.getPiecesInBoard(chessGame)));
     }
 
-    private void printScore(ChessGame chessGame) {
-        outputView.printScore(chessGame.calculatePlayerScore(), chessGame.calculateOpponentScore());
-    }
+    private void printScore(ChessGame chessGame, boolean shouldPrintResult) {
+        Color playerColor = chessGame.getMovablePieceColor();
+        ScoreDto player = ScoreDto.from(playerColor, chessGame.calculatePlayerScore());
+        ScoreDto opponent = ScoreDto.from(playerColor.getOpponentColor(), chessGame.calculateOpponentScore());
 
-    private void printResultByComparingScore(ChessGame chessGame) {
-        outputView.printScoreResult(chessGame.calculatePlayerScore(), chessGame.calculateOpponentScore());
+        if (shouldPrintResult) {
+            outputView.printScoreResult(player, opponent);
+            return;
+        }
+        outputView.printScore(player, opponent);
     }
 }
