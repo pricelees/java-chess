@@ -17,7 +17,7 @@ public enum Command {
         this.identifier = identifier;
     }
 
-    public static Command from(String identifier) {
+    private static Command from(String identifier) {
         return Arrays.stream(values())
                 .filter(command -> command.identifier.equals(identifier))
                 .findAny()
