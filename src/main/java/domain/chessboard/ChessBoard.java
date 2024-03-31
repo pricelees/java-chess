@@ -1,29 +1,32 @@
 package domain.chessboard;
 
 import domain.coordinate.Coordinate;
-import domain.coordinate.Position;
 import domain.direction.Direction;
 import domain.piece.Blank;
 import domain.piece.Color;
-import domain.piece.King;
 import domain.piece.base.ChessPiece;
-import java.util.List;
+import domain.piece.type.PieceType;
+import java.util.Map;
 
 public class ChessBoard {
 
-    private final List<Row> board;
+    private final Map<Coordinate, ChessPiece> board;
+
+    public ChessBoard(Map<Coordinate, ChessPiece> board) {
+        this.board = board;
+    }
 
     public ChessBoard() {
-        this.board = ChessBoardInitializer.createInitialBoard();
+        this(ChessBoardInitializer.createInitialBoard());
     }
 
     /**
-     * @param start 이동할 말의 위치
-     * @param destination 말을 이동시키고자 하는 위치
+     * @param start            이동할 말의 위치
+     * @param destination      말을 이동시키고자 하는 위치
      * @param currentTurnColor 현재 이동이 가능한 말의 색상
-     * @return 이동이 불가능하면 예외, 상대의 King을 잡고 이동하면 true, 이외의 이동에 대해선 false
+     * @return 이동이 불가능하면 예외, 이동에 성공하면 움직인 말과 제거된 말을 담은 MovingResult 반환
      */
-    public boolean movePiece(Coordinate start, Coordinate destination, Color currentTurnColor) {
+    public MovingResult movePiece(Coordinate start, Coordinate destination, Color currentTurnColor) {
         Direction direction = getMovingPiece(start, currentTurnColor).getDirection(start, destination);
         validateDestination(destination, currentTurnColor);
         validatePath(direction, start, destination);
@@ -34,7 +37,7 @@ public class ChessBoard {
     private ChessPiece getMovingPiece(Coordinate start, Color currentTurnColor) {
         ChessPiece piece = getPiece(start);
 
-        if (!piece.hasSameColor(currentTurnColor)) {
+        if (!isEmptyCoordinate(start) && !piece.hasSameColor(currentTurnColor)) {
             throw new IllegalArgumentException("색상이 다른 말을 움직일 수 없습니다.");
         }
         return piece;
@@ -65,35 +68,29 @@ public class ChessBoard {
     }
 
     private boolean isEmptyCoordinate(Coordinate coordinate) {
-        return getPiece(coordinate) instanceof Blank;
+        ChessPiece piece = getPiece(coordinate);
+        return piece.isSameType(PieceType.BLANK);
     }
 
-    private boolean move(Coordinate start, Coordinate destination) {
-        ChessPiece movingPiece = getPiece(start);
-        ChessPiece removedPiece = getPiece(destination);
+    private MovingResult move(Coordinate start, Coordinate destination) {
+        ChessPiece movingPiece = board.get(start);
+        ChessPiece removedPiece = board.get(destination);
 
-        replacePiece(start, Blank.getInstance());
-        replacePiece(destination, movingPiece);
+        board.put(start, Blank.getInstance());
+        board.put(destination, movingPiece);
 
-        return removedPiece instanceof King;
-    }
-
-    private void replacePiece(Coordinate coordinate, ChessPiece chessPiece) {
-        Row row = getRow(coordinate.getRow());
-        row.replace(coordinate.getColumn(), chessPiece);
+        return new MovingResult(movingPiece, removedPiece);
     }
 
     private ChessPiece getPiece(Coordinate coordinate) {
-        Row row = getRow(coordinate.getRow());
-
-        return row.getPiece(coordinate.getColumn());
+        ChessPiece piece = board.get(coordinate);
+        if (piece == null) {
+            throw new IllegalArgumentException("올바른 위치가 아닙니다.");
+        }
+        return piece;
     }
 
-    private Row getRow(Position row) {
-        return board.get(row.getValue());
-    }
-
-    public List<Row> getBoard() {
-        return List.copyOf(board);
+    public Map<Coordinate, ChessPiece> getBoard() {
+        return Map.copyOf(board);
     }
 }

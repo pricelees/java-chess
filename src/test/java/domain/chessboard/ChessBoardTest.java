@@ -6,12 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import domain.coordinate.Coordinate;
-import domain.coordinate.Position;
 import domain.piece.BlackPawn;
 import domain.piece.Blank;
 import domain.piece.Color;
 import domain.piece.base.ChessPiece;
-import net.bytebuddy.pool.TypePool.Empty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -117,10 +115,10 @@ class ChessBoardTest {
         assertThat(getPieceInBoard(new Coordinate(6, 1))).isInstanceOf(Blank.class);
     }
 
-    @DisplayName("상대의 King을 잡고 이동하면 true를, 빈 칸으로의 이동 또는 상대의 다른 말을 잡으면 false를 반환한다.")
+    @DisplayName("상대의 KING을 잡았는지 확인한다.")
     @Test
     void removeKing() {
-        boolean isKingRemoved;
+        MovingResult movingResult;
         /*
          RNBQKBNR
          PPPPPPPP
@@ -131,8 +129,8 @@ class ChessBoardTest {
          pppppppp
          r.bqkbnr
          */
-        isKingRemoved = chessBoard.movePiece(new Coordinate(7, 1), new Coordinate(5, 2), Color.WHITE);
-        assertFalse(isKingRemoved);
+        movingResult = chessBoard.movePiece(new Coordinate(7, 1), new Coordinate(5, 2), Color.WHITE);
+        assertFalse(movingResult.isKingRemoved());
 
         /*
          RNBQKBNR
@@ -144,8 +142,8 @@ class ChessBoardTest {
          pppppppp
          r.bqkbnr
          */
-        isKingRemoved = chessBoard.movePiece(new Coordinate(5, 2), new Coordinate(3, 1), Color.WHITE);
-        assertFalse(isKingRemoved);
+        movingResult = chessBoard.movePiece(new Coordinate(5, 2), new Coordinate(3, 1), Color.WHITE);
+        assertFalse(movingResult.isKingRemoved());
 
          /*
          RNBQKBNR
@@ -157,8 +155,8 @@ class ChessBoardTest {
          pppppppp
          r.bqkbnr
          */
-        isKingRemoved = chessBoard.movePiece(new Coordinate(3, 1), new Coordinate(1, 2), Color.WHITE);
-        assertFalse(isKingRemoved);
+        movingResult = chessBoard.movePiece(new Coordinate(3, 1), new Coordinate(1, 2), Color.WHITE);
+        assertFalse(movingResult.isKingRemoved());
 
          /*
          RNBQnBNR
@@ -170,11 +168,11 @@ class ChessBoardTest {
          pppppppp
          r.bqkbnr
          */
-        isKingRemoved = chessBoard.movePiece(new Coordinate(1, 2), new Coordinate(0, 4), Color.WHITE);
-        assertTrue(isKingRemoved);
+        movingResult = chessBoard.movePiece(new Coordinate(1, 2), new Coordinate(0, 4), Color.WHITE);
+        assertTrue(movingResult.isKingRemoved());
     }
 
     private ChessPiece getPieceInBoard(Coordinate coordinate) {
-        return chessBoard.getBoard().get(coordinate.getRow().getValue()).getPiece(coordinate.getColumn());
+        return chessBoard.getBoard().get(coordinate);
     }
 }
