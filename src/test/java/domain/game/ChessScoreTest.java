@@ -3,15 +3,18 @@ package domain.game;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import domain.chessboard.ChessBoard;
-import domain.chessboard.Row;
+import domain.coordinate.Coordinate;
 import domain.piece.BlackPawn;
+import domain.piece.Blank;
 import domain.piece.Color;
 import domain.piece.WhitePawn;
-import java.util.List;
+import domain.piece.base.ChessPiece;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ChessScoreTest {
+public class ChessScoreTest {
 
     ChessScore chessScore = new ChessScore();
 
@@ -19,7 +22,7 @@ class ChessScoreTest {
     @Test
     void calculateScoreInitialBoard() {
         ChessBoard chessBoard = new ChessBoard();
-        List<Row> board = chessBoard.getBoard();
+        Map<Coordinate, ChessPiece> board = chessBoard.getBoard();
 
         double expectedScore = 38.0d;
         double actualWhiteScore = chessScore.getScore(board, Color.WHITE);
@@ -32,18 +35,31 @@ class ChessScoreTest {
     @DisplayName("같은 색상의 폰이 같은 세로줄에 있으면 0.5점으로 계산한다.")
     @Test
     void calculatePawnScore() {
-        /* 아래의 형태의 board 를 만든다.
-         Pp
-         Pp
+        /*
+         Pp......
+         Pp......
+         ........
+         ........
+         ........
+         ........
+         ........
+         ........
          */
-        Row row = new Row(List.of(new BlackPawn(), new WhitePawn()));
-        List<Row> board = List.of(row, row);
+        Map<Coordinate, ChessPiece> board = new HashMap<>();
+        for (int i = 0; i < 2; i++) {
+            board.put(new Coordinate(i, 0), new BlackPawn());
+            board.put(new Coordinate(i, 1), new WhitePawn());
+        }
+        for (int i = 2; i < 8; i++) {
+            board.put(new Coordinate(0, i), Blank.getInstance());
+            board.put(new Coordinate(1, i), Blank.getInstance());
+        }
 
         double expectedScore = 1.0d;
-        double actualWhitePawnScore = chessScore.getScore(board, Color.WHITE);
-        double actualBlackPawnScore = chessScore.getScore(board, Color.BLACK);
+        double actualWhiteScore = chessScore.getScore(board, Color.WHITE);
+        double actualBlackScore = chessScore.getScore(board, Color.BLACK);
 
-        assertThat(actualWhitePawnScore).isEqualTo(expectedScore);
-        assertThat(actualBlackPawnScore).isEqualTo(expectedScore);
+        assertThat(actualWhiteScore).isEqualTo(expectedScore);
+        assertThat(actualBlackScore).isEqualTo(expectedScore);
     }
 }
