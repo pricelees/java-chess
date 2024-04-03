@@ -1,4 +1,4 @@
-package service.dao;
+package db.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,7 @@ public class GameDao {
         }
     }
 
-    public void saveColor(String movingColor) {
+    public void updateColor(String movingColor) {
         final String query = "UPDATE game SET moving_color = ? WHERE game_id = 1";
         try (final Connection connection = chessDBUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
