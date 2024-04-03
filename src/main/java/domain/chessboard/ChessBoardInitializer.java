@@ -17,14 +17,12 @@ import java.util.Map;
 
 public class ChessBoardInitializer {
 
-    private static final int CHESS_BOARD_SIZE = 8;
-
     private ChessBoardInitializer() {
     }
 
     public static Map<Coordinate, ChessPiece> createInitialBoard() {
         Map<Coordinate, ChessPiece> board = new HashMap<>();
-        for (int column = 0; column < CHESS_BOARD_SIZE; column++) {
+        for (int column = 0; column < ChessBoard.SIZE; column++) {
             board.put(new Coordinate(0, column), createFirstRank(Color.BLACK).get(column));
             board.put(new Coordinate(1, column), new BlackPawn());
             board.put(new Coordinate(2, column), Blank.getInstance());

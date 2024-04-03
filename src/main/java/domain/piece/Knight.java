@@ -8,7 +8,7 @@ import domain.piece.type.PieceType;
 
 public class Knight extends ChessPieceBase {
 
-    private static final double KNIGHT_DEFAULT_SCORE = 2.5;
+    private static final double KNIGHT_DEFAULT_SCORE = 2.5d;
 
     public Knight(Color color) {
         super(PieceType.KNIGHT, color);

@@ -9,7 +9,9 @@ import domain.piece.type.PieceType;
 
 public abstract class PawnBase extends ChessPieceBase {
 
-    private static final int PAWN_DEFAULT_SCORE = 1;
+    private static final double PAWN_DEFAULT_SCORE = 1d;
+    private static final int PAWN_MOVABLE_DISTANCE = 1;
+    private static final int INITIAL_PAWN_MOVABLE_DISTANCE = 2;
 
     public PawnBase(Color color) {
         super(PieceType.PAWN, color);
@@ -39,7 +41,7 @@ public abstract class PawnBase extends ChessPieceBase {
         int rowDifference = start.calculateRowDifference(destination);
         int columnDifference = start.calculateColumnDifference(destination);
 
-        if (Math.abs(rowDifference) == 1 && Math.abs(columnDifference) == 1) {
+        if (Math.abs(rowDifference) == PAWN_MOVABLE_DISTANCE && Math.abs(columnDifference) == PAWN_MOVABLE_DISTANCE) {
             return DiagonalDirection.getDirection(rowDifference, columnDifference);
         }
 
@@ -47,6 +49,6 @@ public abstract class PawnBase extends ChessPieceBase {
     }
 
     public boolean isMovableDistance(int distance, boolean isInitialPawn) {
-        return distance == 1 || (distance == 2 && isInitialPawn);
+        return distance == PAWN_MOVABLE_DISTANCE || (distance == INITIAL_PAWN_MOVABLE_DISTANCE && isInitialPawn);
     }
 }

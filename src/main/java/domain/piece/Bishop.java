@@ -8,7 +8,7 @@ import domain.piece.type.PieceType;
 
 public class Bishop extends ChessPieceBase {
 
-    private static final double BISHOP_DEFAULT_SCORE = 3;
+    private static final double BISHOP_DEFAULT_SCORE = 3d;
 
     public Bishop(Color color) {
         super(PieceType.BISHOP, color);

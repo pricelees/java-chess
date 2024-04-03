@@ -9,6 +9,8 @@ import domain.piece.type.PieceType;
 
 public class King extends ChessPieceBase {
 
+    private static final double NONE = 0d;
+
     public King(Color color) {
         super(PieceType.KING, color);
     }
@@ -25,7 +27,7 @@ public class King extends ChessPieceBase {
 
     @Override
     public double getDefaultScore() {
-        return 0;
+        return NONE;
     }
 
     private Direction getKingDirection(int rowDifference, int columnDifference) {

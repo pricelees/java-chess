@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class ChessBoard {
 
+    public static final int SIZE = 8;
     private final Map<Coordinate, ChessPiece> board;
 
     public ChessBoard(Map<Coordinate, ChessPiece> board) {
@@ -20,12 +21,6 @@ public class ChessBoard {
         this(ChessBoardInitializer.createInitialBoard());
     }
 
-    /**
-     * @param start            이동할 말의 위치
-     * @param destination      말을 이동시키고자 하는 위치
-     * @param currentTurnColor 현재 이동이 가능한 말의 색상
-     * @return 이동이 불가능하면 예외, 이동에 성공하면 움직인 말과 제거된 말을 담은 MovingResult 반환
-     */
     public MovingResult movePiece(Coordinate start, Coordinate destination, Color currentTurnColor) {
         Direction direction = getMovingPiece(start, currentTurnColor).getDirection(start, destination);
         validateDestination(destination, currentTurnColor);

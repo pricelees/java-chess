@@ -7,6 +7,8 @@ import domain.piece.type.PieceType;
 
 public class Blank implements ChessPiece {
 
+    private static final double NONE = 0d;
+
     private static final Blank instance = new Blank();
 
     private Blank() {
@@ -23,7 +25,7 @@ public class Blank implements ChessPiece {
 
     @Override
     public double getDefaultScore() {
-        return 0;
+        return NONE;
     }
 
     @Override

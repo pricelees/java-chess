@@ -9,7 +9,7 @@ import domain.piece.type.PieceType;
 
 public class Queen extends ChessPieceBase {
 
-    private static final double QUEEN_DEFAULT_SCORE = 9;
+    private static final double QUEEN_DEFAULT_SCORE = 9d;
 
     public Queen(Color color) {
         super(PieceType.QUEEN, color);

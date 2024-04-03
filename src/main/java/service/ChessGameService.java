@@ -81,7 +81,7 @@ public class ChessGameService {
     public List<List<ChessPiece>> getPiecesInBoard(ChessGame chessGame) {
         Map<Coordinate, ChessPiece> board = chessGame.getCurrentBoard();
         List<List<ChessPiece>> result = new ArrayList<>();
-        for (int row = 0; row < 8; row++) {
+        for (int row = 0; row < ChessBoard.SIZE; row++) {
             result.add(getPiecesInRow(board, row));
         }
         return result;
@@ -89,7 +89,7 @@ public class ChessGameService {
 
     private List<ChessPiece> getPiecesInRow(Map<Coordinate, ChessPiece> board, int row) {
         List<ChessPiece> result = new ArrayList<>();
-        for (int column = 0; column < 8; column++) {
+        for (int column = 0; column < ChessBoard.SIZE; column++) {
             result.add(board.get(new Coordinate(row, column)));
         }
         return result;

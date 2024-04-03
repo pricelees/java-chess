@@ -8,7 +8,7 @@ import domain.piece.type.PieceType;
 
 public class Rook extends ChessPieceBase {
 
-    private static final double ROOK_DEFAULT_SCORE = 5;
+    private static final double ROOK_DEFAULT_SCORE = 5d;
 
     public Rook(Color color) {
         super(PieceType.ROOK, color);
