@@ -12,7 +12,7 @@ public class CoordinateMapper {
     static {
         Arrays.stream(Column.values())
                 .forEach(column -> Arrays.stream(Row.values()).forEach(row -> {
-                    String name = column.getLowerName() + row.getName();
+                    String name = column.name().toLowerCase() + row.getName();
                     CACHE_FROM_NAME.put(name, new Coordinate(row.getValue(), column.getValue()));
                     CACHE_FROM_COORDINATE.put(new Coordinate(row.getValue(), column.getValue()), name);
                 }));

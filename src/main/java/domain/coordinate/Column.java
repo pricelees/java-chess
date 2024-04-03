@@ -17,10 +17,6 @@ public enum Column {
         this.value = value;
     }
 
-    public String getLowerName() {
-        return name().toLowerCase();
-    }
-
     public int getValue() {
         return value;
     }
