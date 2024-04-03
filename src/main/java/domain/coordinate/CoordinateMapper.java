@@ -1,4 +1,4 @@
-package service.mapper;
+package domain.coordinate;
 
 import domain.coordinate.Column;
 import domain.coordinate.Coordinate;

@@ -2,7 +2,7 @@ package service.dto;
 
 import domain.coordinate.Coordinate;
 import domain.piece.base.ChessPiece;
-import service.mapper.CoordinateMapper;
+import domain.coordinate.CoordinateMapper;
 
 public record CoordinateDto(String coordinate, String pieceType, String pieceColor) {
 
