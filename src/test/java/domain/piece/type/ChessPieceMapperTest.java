@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import domain.piece.Blank;
 import domain.piece.Color;
 import domain.piece.base.ChessPiece;
-import domain.piece.type.ChessPieceMapper;
-import domain.piece.type.PieceType;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;

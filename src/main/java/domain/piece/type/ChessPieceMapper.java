@@ -10,7 +10,6 @@ import domain.piece.Queen;
 import domain.piece.Rook;
 import domain.piece.WhitePawn;
 import domain.piece.base.ChessPiece;
-import domain.piece.type.PieceType;
 import java.util.Arrays;
 
 public enum ChessPieceMapper {

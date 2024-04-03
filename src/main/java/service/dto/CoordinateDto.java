@@ -1,8 +1,8 @@
 package service.dto;
 
 import domain.coordinate.Coordinate;
-import domain.piece.base.ChessPiece;
 import domain.coordinate.CoordinateMapper;
+import domain.piece.base.ChessPiece;
 
 public record CoordinateDto(String coordinate, String pieceType, String pieceColor) {
 

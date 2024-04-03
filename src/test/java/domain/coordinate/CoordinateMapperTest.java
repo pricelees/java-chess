@@ -2,8 +2,6 @@ package domain.coordinate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import domain.coordinate.Coordinate;
-import domain.coordinate.CoordinateMapper;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

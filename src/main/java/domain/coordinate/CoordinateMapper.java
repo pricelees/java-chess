@@ -1,8 +1,5 @@
 package domain.coordinate;
 
-import domain.coordinate.Column;
-import domain.coordinate.Coordinate;
-import domain.coordinate.Row;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
