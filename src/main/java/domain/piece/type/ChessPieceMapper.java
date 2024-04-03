@@ -1,4 +1,4 @@
-package service.mapper;
+package domain.piece.type;
 
 import domain.piece.Bishop;
 import domain.piece.BlackPawn;
