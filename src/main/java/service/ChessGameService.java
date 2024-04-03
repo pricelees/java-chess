@@ -1,22 +1,22 @@
 package service;
 
+import db.dao.BoardDao;
+import db.dao.GameDao;
 import domain.chessboard.ChessBoard;
 import domain.chessboard.MovingResult;
 import domain.coordinate.Coordinate;
+import domain.coordinate.CoordinateMapper;
 import domain.game.ChessGame;
 import domain.piece.Blank;
 import domain.piece.Color;
 import domain.piece.base.ChessPiece;
+import domain.piece.type.ChessPieceMapper;
 import domain.piece.type.PieceType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import service.dao.BoardDao;
-import service.dao.GameDao;
 import service.dto.CoordinateDto;
-import service.mapper.ChessPieceMapper;
-import service.mapper.CoordinateMapper;
 
 public class ChessGameService {
 
@@ -70,7 +70,7 @@ public class ChessGameService {
                 CoordinateDto.from(start, Blank.getInstance()),
                 CoordinateDto.from(destination, movingResult.getMovingPiece())
         );
-        gameDao.saveColor(movableColor.name());
+        gameDao.updateColor(movableColor.name());
     }
 
     public void deleteGame() {
@@ -97,19 +97,24 @@ public class ChessGameService {
 
     private ChessBoard loadBoard(List<CoordinateDto> coordinateDtos) {
         return new ChessBoard(coordinateDtos.stream()
-                .collect(Collectors.toMap(coordinateDto -> CoordinateMapper.getCoordinate(coordinateDto.coordinate()),
-                        coordinateDto -> ChessPieceMapper.getInstance(PieceType.valueOf(coordinateDto.pieceType()),
-                                Color.valueOf(coordinateDto.pieceColor()))))
+                .collect(Collectors.toMap(this::mapDtoToCoordinate, this::mapDtoToPiece))
         );
+    }
+
+    private Coordinate mapDtoToCoordinate(CoordinateDto coordinateDto) {
+        return CoordinateMapper.getCoordinate(coordinateDto.coordinate());
+    }
+
+    private ChessPiece mapDtoToPiece(CoordinateDto coordinateDto) {
+        PieceType pieceType = PieceType.valueOf(coordinateDto.pieceType());
+        Color color = Color.valueOf(coordinateDto.pieceColor());
+
+        return ChessPieceMapper.getInstance(pieceType, color);
     }
 
     private List<CoordinateDto> createBoardDto(Map<Coordinate, ChessPiece> board) {
         return board.entrySet().stream()
-                .map(entry -> new CoordinateDto(
-                        CoordinateMapper.getCoordinateName(entry.getKey()),
-                        entry.getValue().getType().name(),
-                        entry.getValue().getColor().name()
-                ))
+                .map(entry -> CoordinateDto.from(entry.getKey(), entry.getValue()))
                 .toList();
     }
 }
